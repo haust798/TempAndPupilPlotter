@@ -24,16 +24,7 @@ namespace TempAndPupilPlotter
         public Form1()
         {
             InitializeComponent();
-            //serialPort1.Open();
-            //To handle live data easily, in this case we built a specialized type
-            //the MeasureModel class, it only contains 2 properties
-            //DateTime and Value
-            //We need to configure LiveCharts to handle MeasureModel class
-            //The next code configures MEasureModel  globally, this means
-            //that livecharts learns to plot MeasureModel and will use this config every time
-            //a ChartValues instance uses this type.
-            //this code ideally should only run once, when application starts is reccomended.
-            //you can configure series in many ways, learn more at http://lvcharts.net/App/examples/v1/wpf/Types%20and%20Configuration
+            serialPort1.Open();
 
             _netMqListener = new NetMqListener(HandleMessage);
             _netMqListener.Start();
@@ -90,7 +81,7 @@ namespace TempAndPupilPlotter
             //The next code simulates data changes every 500 ms
             Timer = new Timer
             {
-                Interval = 200
+                Interval = 500
             };
             Timer.Tick += TimerOnTick;
             Timer.Start();
@@ -111,9 +102,7 @@ namespace TempAndPupilPlotter
 
         private void TimerOnTick(object sender, EventArgs eventArgs)
         {
-            Random R = new Random();
-            var now = System.DateTime.Now;
-            /*
+            var now = System.DateTime.Now;      
             double number;
             if (double.TryParse(serialPort1.ReadLine(), out number))
             {
@@ -122,14 +111,17 @@ namespace TempAndPupilPlotter
                     DateTime = now,
                     Value = number
                 });
-            }*/
+            }
 
             //Testing code:
+            /*
+            Random R = new Random();
             ChartValues.Add(new MeasureModel
             {
                 DateTime = now,
                 Value = R.Next()
             });
+            */
 
             SetAxisLimits(now);
 
